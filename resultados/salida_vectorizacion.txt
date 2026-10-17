@@ -1,0 +1,34 @@
+Documentos (párrafos) en el corpus: 36
+
+=== 1. Bag of Words ===
+Forma de la matriz: (36, 923) (documentos x vocabulario)
+Densidad: 4.84% de celdas distintas de 0
+Top 10 por frecuencia: [('hábito', 58.0), ('meta', 46.0), ('pequeño', 33.0), ('sistema', 32.0), ('resultado', 30.0), ('año', 25.0), ('cambio', 23.0), ('tiempo', 21.0), ('alcanzar', 20.0), ('mejora', 18.0)]
+
+=== 2. One-Hot (binario) ===
+Top 10 por número de párrafos donde aparece: [('hábito', 19.0), ('pequeño', 16.0), ('tiempo', 15.0), ('resultado', 14.0), ('año', 13.0), ('convertir', 11.0), ('sistema', 10.0), ('cambio', 10.0), ('alcanzar', 10.0), ('mejora', 10.0)]
+
+=== 3. TF-IDF ===
+Forma de la matriz: (36, 923)
+Top 10 por peso TF-IDF: [('hábito', 3.584), ('meta', 2.6), ('año', 2.28), ('pequeño', 2.06), ('sistema', 1.998), ('resultado', 1.449), ('atómico', 1.418), ('tiempo', 1.36), ('suceder', 1.208), ('cambio', 1.191)]
+IDF más bajo (palabras comunes): [('hábito', 1.62), ('pequeño', 1.78), ('tiempo', 1.84), ('resultado', 1.9), ('año', 1.97)]
+IDF más alto (palabras raras):   [('afirmativo', 3.92), ('acerca', 3.92), ('absurdo', 3.92), ('abordar', 3.92), ('abandonar', 3.92)]
+Palabras clave del párrafo 1: ['sorprendente', 'atómico', 'hábito', 'egoísta', 'eficientemente']
+
+=== 4. N-gramas ===
+Forma de la matriz: (36, 377) (92 bigramas que aparecen en 2+ párrafos)
+Top 10 bigramas: [('hábito atómico', 1.203), ('pequeño hábito', 1.004), ('meseta potencial', 0.869), ('potencial latente', 0.869), ('malo hábito', 0.694), ('abismo desilusión', 0.672), ('pequeño cambio', 0.653), ('pequeño mejora', 0.58), ('hábito tiempo', 0.56), ('ciclismo británico', 0.492)]
+
+=== 5. Word2Vec ===
+Vocabulario: 336 palabras, vectores de 50 dimensiones
+Primeros 5 valores del vector 'hábito': [-0.231 -0.426  0.003 -0.016  0.407]
+Más parecidas a 'hábito': [('doble', 0.68), ('formar', 0.67), ('filo', 0.66), ('átomo', 0.66), ('espada', 0.65)]
+Más parecidas a 'meta': [('centrar', 0.79), ('concentrar', 0.78), ('totalmente', 0.76), ('perdedor', 0.75), ('compartir', 0.73)]
+Más parecidas a 'sistema': [('desciend', 0.79), ('arreglar', 0.77), ('resolver', 0.75), ('complejo', 0.74), ('molécula', 0.71)]
+
+=== 6. Similitud coseno (TF-IDF) ===
+Párrafos más parecidos: parrafo_29 y parrafo_30 (similitud 0.47)
+  -> olvidar meta céntrate sistema sabiduría prevaleciente afirmar alcanzar vida forma establec ...
+  -> empresario meta establecer negocio valor millón dólares sistema evalúas idea desarrollar p ...
+
+Matrices y modelo guardados en la carpeta 'resultados/'

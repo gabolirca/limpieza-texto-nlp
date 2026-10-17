@@ -14,11 +14,9 @@ ARCHIVO_SALIDA = "habitos_atomicos_limpio.txt"
 # ---------------------------------------------------------------
 # 1. INGESTA
 # ---------------------------------------------------------------
-with open(ARCHIVO_ENTRADA, encoding="utf-8") as f:
-    texto_original = f.read()
-
-print(f"Caracteres originales: {len(texto_original):,}")
-print(f"Palabras originales:   {len(texto_original.split()):,}")
+def cargar_texto(ruta=ARCHIVO_ENTRADA):
+    with open(ruta, encoding="utf-8") as f:
+        return f.read()
 
 # ---------------------------------------------------------------
 # 2. PRE-LIMPIEZA (ruido propio de un PDF convertido a .txt)
@@ -57,6 +55,9 @@ def normalizar(texto):
 # ---------------------------------------------------------------
 nlp = spacy.load("es_core_news_sm", disable=["parser", "ner"])
 
+# Stopwords extra: lemas de pronombres que spaCy no incluye en su lista
+STOPWORDS_EXTRA = {"él", "ella", "ello", "yo", "tú", "usted"}
+
 
 def lematizar(texto):
     doc = nlp(texto)
@@ -66,35 +67,54 @@ def lematizar(texto):
             continue
         if not token.is_alpha or len(token) < 3:
             continue
-        lemas.append(token.lemma_.lower())
+        # Verbos con pronombre pegado: "convertirse" -> "convertir él" -> "convertir"
+        lema = token.lemma_.lower().split()[0]
+        # El lema también puede ser stopword (ej. "se" -> "él")
+        if lema in nlp.Defaults.stop_words or lema in STOPWORDS_EXTRA:
+            continue
+        lemas.append(lema)
     return lemas
+
+
+def limpiar(texto):
+    """Pipeline completo: pre-limpieza -> normalización -> lematización."""
+    return lematizar(normalizar(pre_limpieza(texto)))
 
 
 # ---------------------------------------------------------------
 # EJECUCIÓN DEL PROCESO
 # ---------------------------------------------------------------
-texto_pre = pre_limpieza(texto_original)
-texto_norm = normalizar(texto_pre)
-lemas = lematizar(texto_norm)
-texto_limpio = " ".join(lemas)
+def main():
+    texto_original = cargar_texto()
+    print(f"Caracteres originales: {len(texto_original):,}")
+    print(f"Palabras originales:   {len(texto_original.split()):,}")
 
-with open(ARCHIVO_SALIDA, "w", encoding="utf-8") as f:
-    f.write(texto_limpio)
+    texto_pre = pre_limpieza(texto_original)
+    texto_norm = normalizar(texto_pre)
+    lemas = lematizar(texto_norm)
+    texto_limpio = " ".join(lemas)
 
-# ---------------------------------------------------------------
-# RESULTADOS
-# ---------------------------------------------------------------
-print(f"\nTokens tras limpieza:  {len(lemas):,}")
-print(f"Vocabulario único:     {len(set(lemas)):,}")
-print(f"Reducción de palabras: {100 - len(lemas) / len(texto_original.split()) * 100:.1f}%")
+    with open(ARCHIVO_SALIDA, "w", encoding="utf-8") as f:
+        f.write(texto_limpio)
 
-print("\nEjemplo de normalización y lematización:")
-ejemplo = "Los hábitos pequeños generan cambios enormes cuando se repiten."
-print("  Original:", ejemplo)
-print("  Limpio:  ", " ".join(lematizar(normalizar(ejemplo))))
+    # ---------------------------------------------------------------
+    # RESULTADOS
+    # ---------------------------------------------------------------
+    print(f"\nTokens tras limpieza:  {len(lemas):,}")
+    print(f"Vocabulario único:     {len(set(lemas)):,}")
+    print(f"Reducción de palabras: {100 - len(lemas) / len(texto_original.split()) * 100:.1f}%")
 
-print("\nTop 20 lemas más frecuentes:")
-for palabra, freq in Counter(lemas).most_common(20):
-    print(f"  {palabra:<15} {freq}")
+    print("\nEjemplo de normalización y lematización:")
+    ejemplo = "Los hábitos pequeños generan cambios enormes cuando se repiten."
+    print("  Original:", ejemplo)
+    print("  Limpio:  ", " ".join(lematizar(normalizar(ejemplo))))
 
-print(f"\nTexto limpio guardado en {ARCHIVO_SALIDA}")
+    print("\nTop 20 lemas más frecuentes:")
+    for palabra, freq in Counter(lemas).most_common(20):
+        print(f"  {palabra:<15} {freq}")
+
+    print(f"\nTexto limpio guardado en {ARCHIVO_SALIDA}")
+
+
+if __name__ == "__main__":
+    main()
