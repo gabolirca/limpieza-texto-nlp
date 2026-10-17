@@ -1,0 +1,39 @@
+Párrafos: 36 | Tokens: 2088 | Palabras a graficar: 40
+
+Matriz de co-ocurrencia: (923, 923)
+           hábito  meta  pequeño  sistema  resultado  año  cambio  tiempo  alcanzar  mejora
+hábito         26     3       13        5          4    3       7       4         3       1
+meta            3    16        1       18          6    2       1       2        16       2
+pequeño        13     1        0        3          3    3       8       3         2      11
+sistema         5    18        3        4          8    1       0       3         3       1
+resultado       4     6        3        8          6    1       2       4         5       4
+año             3     2        3        1          1    4       1       2         1       1
+cambio          7     1        8        0          2    1       0       1         2       2
+tiempo          4     2        3        3          4    2       1       0         1       2
+alcanzar        3    16        2        3          5    1       2       1         2       3
+mejora          1     2       11        1          4    1       2       2         3       0
+
+PPMI + SVD: (923, 923) -> (923, 50) (varianza explicada 37.4%)
+
+Comparación de vecinos semánticos (conteo vs predicción):
+  hábito
+    PPMI+SVD : [('malo', 0.73), ('enemigo', 0.68), ('aliado', 0.64), ('dañartir', 0.63), ('formar', 0.63)]
+    Word2Vec : [('doble', 0.68), ('formar', 0.67), ('filo', 0.66), ('átomo', 0.66), ('espada', 0.65)]
+  meta
+    PPMI+SVD : [('cumplimiento', 0.79), ('olvidar', 0.79), ('plazo', 0.74), ('céntrate', 0.72), ('centrar', 0.71)]
+    Word2Vec : [('centrar', 0.79), ('concentrar', 0.78), ('totalmente', 0.76), ('perdedor', 0.75), ('compartir', 0.73)]
+  sistema
+    PPMI+SVD : [('olvidar', 0.82), ('céntrate', 0.74), ('satisfecho', 0.73), ('sentirte', 0.7), ('alcanzarla', 0.7)]
+    Word2Vec : [('desciend', 0.79), ('arreglar', 0.77), ('resolver', 0.75), ('complejo', 0.74), ('molécula', 0.71)]
+  pequeño
+    PPMI+SVD : [('pista', 0.86), ('conforme', 0.71), ('significativo', 0.69), ('mejora', 0.65), ('modesta', 0.63)]
+    Word2Vec : [('marginal', 0.72), ('ciento', 0.71), ('estrategia', 0.67), ('ganancia', 0.67), ('mejora', 0.66)]
+
+Generando imágenes:
+  imagenes/01_word2vec_pca.png
+  imagenes/02_ppmi_svd.png
+  imagenes/03_word2vec_tsne.png
+  imagenes/04_parrafos_lsa.png
+  imagenes/05_similitud_palabras.png
+
+Vectores guardados en resultados/
